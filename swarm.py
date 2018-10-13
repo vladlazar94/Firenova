@@ -1,4 +1,5 @@
 import math
+import random
 
 PI = 3.1415926
 
@@ -65,16 +66,16 @@ class Vec2:
             return 2 * PI + math.atan(y/x)
 
     def rotate(self, angle):
-        """Rotates the vector in clockwise positive
-            direction by an angle measured in radians."""
         new_angle = self.angle() + angle
-        return Vec2(self.norm() * math.cos(new_angle), self.norm() * math.sin(new_angle))
+        return Vec2(self.norm() * math.cos(new_angle),
+                    self.norm() * math.sin(new_angle))
 
 
 class Particle:
-    def __init__(self, position, velocity):
+    def __init__(self, position, velocity, colour=(255, 255, 255)):
         self.position = position
         self.velocity = velocity
+        self.colour = colour
 
     def update(self, interval):
         self.position += interval * self.velocity
@@ -83,4 +84,26 @@ class Particle:
 class Swarm:
     def __init__(self, count):
         self.count = count
+        self.particles = []
 
+        for _ in range(count):
+            norm = random.uniform(0, 400)
+            angle = random.uniform(0, 2 * PI)
+
+            x = norm * math.cos(angle)
+            y = norm * math.sin(angle)
+
+            red = int(random.uniform(0, 255))
+            green = int(random.uniform(0, 255))
+            blue = int(random.uniform(0, 255))
+
+            colour = (red, green, blue)
+
+            position = Vec2(x, y)
+            velocity = Vec2(0, 0)
+
+            self.particles.append(Particle(position, velocity, colour))
+
+    def __iter__(self):
+        for particle in self.particles:
+            yield particle
