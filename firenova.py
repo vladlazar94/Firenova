@@ -2,6 +2,7 @@ import math
 import random
 from PIL import Image
 import os
+from pathos.multiprocessing import ProcessingPool as Pool
 
 PI = 3.1415926
 
@@ -143,6 +144,40 @@ class Picture:
                 new_img.putpixel((x, y), (r, g, b))
 
         return new_img
+
+        # Broken parallel code:
+
+        # def blur_pixel(pixel):
+        #     nonlocal new_img
+        #     nonlocal new_img
+        #
+        #     x, y = pixel[0], pixel[1]
+        #
+        #     for x in range(self.width):
+        #         for y in range(self.height):
+        #             r, g, b, count = 0, 0, 0, 0
+        #
+        #             for i in [-1, 0, 1]:
+        #                 for j in [-1, 0, 1]:
+        #                     if (0 <= x + i < self.width) and (0 <= y + j < self.height):
+        #                         pixel = image.getpixel((x + i, y + j))
+        #                         count += 1
+        #                         r += pixel[0]
+        #                         g += pixel[1]
+        #                         b += pixel[2]
+        #
+        #             r, g, b = r // count, g // count, b // count
+        #             new_img.putpixel((x, y), (r, g, b))
+        #
+        # pixels = []
+        # for x in range(self.width):
+        #     for y in range(self.height):
+        #         pixels.append((x, y))
+        #
+        # pool = Pool()
+        # pool.map(blur_pixel, pixels)
+        #
+        # return new_img
 
     def capture(self, swarm, previous=None):
         if previous:
